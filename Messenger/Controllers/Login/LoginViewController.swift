@@ -6,7 +6,7 @@
 //
 
 import UIKit
-
+import FirebaseAuth
 //Login
 class LoginViewController: UIViewController {
 
@@ -29,6 +29,8 @@ class LoginViewController: UIViewController {
         field.leftView = UIView(frame: CGRect(x: 0, y: 0, width: 5, height: 0))
         field.leftViewMode = .always
         field.backgroundColor = .white
+        field.textColor = .black
+        field.tintColor = .darkGray
 
         return field
 
@@ -48,6 +50,8 @@ class LoginViewController: UIViewController {
         field.leftViewMode = .always
         field.backgroundColor = .white
         field.isSecureTextEntry = true
+        field.textColor = .black
+        field.tintColor = .darkGray
 
         return field
 
@@ -133,6 +137,20 @@ class LoginViewController: UIViewController {
         }
         print("Login Tapped")
         // Firebase Login
+        
+        FirebaseAuth.Auth.auth().signIn(withEmail: email, password: password, completion: { result, error in
+
+            if let er = error {
+                print(er)
+            }
+
+            guard let authResult = result, error == nil else {
+                return
+            }
+            let user = authResult.user
+            print("Logged in User: \(user.description)")
+        })
+
     }
 
     func alertLoginError() {
